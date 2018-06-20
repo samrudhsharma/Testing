@@ -1,7 +1,9 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 
 class CafeTest {
 
@@ -39,11 +41,32 @@ class CafeTest {
 	cafe.restockMilk(2);
 	    
     // The When clause (What we want test)
-	Coffee coffee = cafe.brew(CoffeeType.Esspresso); // The coffee has been brewed but we need to test that the restock behaviour is correct
+	cafe.brew(CoffeeType.Esspresso); // The coffee has been brewed but we need to test that the restock behaviour is correct
 	
 	// The Then clause (What we expect to happen)
 	// Test to check that the number of coffee beans after brewing the espresso is 0
 	Assert.assertEquals(0, cafe.getBeansInStock());
   }
 
+  // A test thats is expected to throw and Exception when we brew an latte and the stock of milk is lower than the required amount.
+  // This test shows how to handle exceptions in your code
+  @Test
+  void latterRequiresMilk() {
+	// The Given Clause (setting up the environment for the test)
+	Cafe cafe = new Cafe();
+	cafe.restockBeans(7);
+	//cafe.restockMilk(2);
+	
+
+	// The When clause (What we want test)
+	//cafe.brew(CoffeeType.Latte);
+	 
+    //The Then clause (What we expect to happen)
+    // Test to check that the we an exception is thrown when brewing a latte because the stock of milk is 0
+	Assertions.assertThrows(IllegalStateException.class, () -> {
+		cafe.brew(CoffeeType.Latte);
+    });
+	
+  }
+  
 }
