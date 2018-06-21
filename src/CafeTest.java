@@ -7,12 +7,15 @@ import org.junit.jupiter.api.Test;
 
 class CafeTest {
 
+  private static final int NO_BEANS = 0;
+  private static final int NO_MILK = 0;
+  private static final int ESPRESSO_BEANS = CoffeeType.Esspresso.getRequiredBeans();
+
   @Test
   void canBrewEspresso() {
     
 	// The Given Clause (setting up the environment for the test)
-	Cafe cafe = new Cafe();
-    cafe.restockBeans(7);
+	Cafe cafe = cafeWithBeans();
     cafe.restockMilk(2);
     
     // The When clause (What we want test)
@@ -23,21 +26,22 @@ class CafeTest {
     // Check the returned object is an espresso
     // It should'nt have any milk in it
     // We have the correct amount of coffee 
-    Assert.assertEquals(CoffeeType.Esspresso, coffee.getType()); // Checks the type of coffee brewed by the brew method
-    Assert.assertEquals(0, coffee.getMilk()); // Checks that there isn't any milk in the brewed coffee
-    Assert.assertEquals(7, coffee.getBeans()); // Checks that the number of coffee beans is 7 as is required by an espresso
+    assertEquals(CoffeeType.Esspresso, coffee.getType(), "Wrong tyoe of coffee"); // Checks the type of coffee brewed by the brew method
+    assertEquals(NO_MILK, coffee.getMilk(), "Wrong amount of milk"); // Checks that there isn't any milk in the brewed coffee
+    assertEquals(ESPRESSO_BEANS, coffee.getBeans(), "Wrong number of beans"); // Checks that the number of coffee beans is 7 as is required by an espresso
     
     // If there is an error in the test the exact issue is highlighted in the JUnit terminal
     // Assert.assertEquals(1, coffee.getMilk()); 
     // This test fails as the amount of milk an espresso takes is 0 and the terminal prints "java.lang.AssertionError: expected:<1> but was:<0>"
   }
+
+
   
   // A test to check that after an espresso has been brewed that the stock levels of the coffee beans have been updated correctly
   @Test
   void brewingEspressoConsumesBeans() {
 	// The Given Clause (setting up the environment for the test)
-	Cafe cafe = new Cafe();
-	cafe.restockBeans(7);
+	Cafe cafe = cafeWithBeans();
 	cafe.restockMilk(2);
 	    
     // The When clause (What we want test)
@@ -45,17 +49,15 @@ class CafeTest {
 	
 	// The Then clause (What we expect to happen)
 	// Test to check that the number of coffee beans after brewing the espresso is 0
-	Assert.assertEquals(0, cafe.getBeansInStock());
+	Assert.assertEquals("Wrong amount of beans left", NO_BEANS, cafe.getBeansInStock());
   }
 
   // A test thats is expected to throw and Exception when we brew an latte and the stock of milk is lower than the required amount.
   // This test shows how to handle exceptions in your code
   @Test
-  void latterRequiresMilk() {
+  void latteRequiresMilk() {
 	// The Given Clause (setting up the environment for the test)
-	Cafe cafe = new Cafe();
-	cafe.restockBeans(7);
-	//cafe.restockMilk(2);
+	Cafe cafe = cafeWithBeans();
 	
 
 	// The When clause (What we want test)
@@ -68,5 +70,12 @@ class CafeTest {
     });
 	
   }
+  
+  private Cafe cafeWithBeans() {
+		
+		Cafe cafe = new Cafe();
+	    cafe.restockBeans(ESPRESSO_BEANS);
+		return cafe;
+	}
   
 }
