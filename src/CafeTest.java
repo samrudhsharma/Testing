@@ -1,8 +1,14 @@
+
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 
 class CafeTest {
@@ -10,12 +16,19 @@ class CafeTest {
   private static final int NO_BEANS = 0;
   private static final int NO_MILK = 0;
   private static final int ESPRESSO_BEANS = CoffeeType.Esspresso.getRequiredBeans();
+  private Cafe cafe;
+  
+  @BeforeEach
+  public void before() {
+	cafe = new Cafe();
+	cafe.restockBeans(ESPRESSO_BEANS);
+  }
 
   @Test
   void canBrewEspresso() {
     
-	// The Given Clause (setting up the environment for the test)
-	Cafe cafe = cafeWithBeans();
+	// The Given Clause (setting up the environment for the test
+	//withBeans();
     cafe.restockMilk(2);
     
     // The When clause (What we want test)
@@ -26,6 +39,7 @@ class CafeTest {
     // Check the returned object is an espresso
     // It should'nt have any milk in it
     // We have the correct amount of coffee 
+    //assertThat(coffee, hasProperty("beans", equalTo(ESPRESSO_BEANS)));
     assertEquals(CoffeeType.Esspresso, coffee.getType(), "Wrong tyoe of coffee"); // Checks the type of coffee brewed by the brew method
     assertEquals(NO_MILK, coffee.getMilk(), "Wrong amount of milk"); // Checks that there isn't any milk in the brewed coffee
     assertEquals(ESPRESSO_BEANS, coffee.getBeans(), "Wrong number of beans"); // Checks that the number of coffee beans is 7 as is required by an espresso
@@ -41,8 +55,7 @@ class CafeTest {
   @Test
   void brewingEspressoConsumesBeans() {
 	// The Given Clause (setting up the environment for the test)
-	Cafe cafe = cafeWithBeans();
-	cafe.restockMilk(2);
+	//withBeans();
 	    
     // The When clause (What we want test)
 	cafe.brew(CoffeeType.Esspresso); // The coffee has been brewed but we need to test that the restock behaviour is correct
@@ -57,8 +70,7 @@ class CafeTest {
   @Test
   void latteRequiresMilk() {
 	// The Given Clause (setting up the environment for the test)
-	Cafe cafe = cafeWithBeans();
-	
+	//withBeans();
 
 	// The When clause (What we want test)
 	//cafe.brew(CoffeeType.Latte);
@@ -71,11 +83,8 @@ class CafeTest {
 	
   }
   
-  private Cafe cafeWithBeans() {
-		
-		Cafe cafe = new Cafe();
-	    cafe.restockBeans(ESPRESSO_BEANS);
-		return cafe;
-	}
+  private void withBeans() {
+	cafe.restockBeans(ESPRESSO_BEANS);
+  }
   
 }
